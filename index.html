@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>termin.nu</title>
+    <style>
+        html, body {
+            height: 100%;
+            background-color: #90c0de;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .period-display {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            margin: -10vw 0 0 0;
+            text-align: center;
+            color: #1c7bb7;
+            font-family: Arial, serif;
+            font-size: 25vw;
+            line-height: 1;
+            font-weight: bold;
+        }
+	@media (min-width: 1200px) {
+            .period-display {
+                font-size: 260px
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="period-display" id="period">Loading...</div>
+
+    <script>
+        function getPeriod() {
+            const today = new Date();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+
+            const periods = [
+                { name: "lp 1", start: { month: 9, day: 2 }, end: { month: 11, day: 3 } },  // 2024 09 02 – 2024 11 03
+                { name: "lp 2", start: { month: 11, day: 4 }, end: { month: 1, day: 19 } }, // 2024 11 04 – 2025 01 19
+                { name: "lp 3", start: { month: 1, day: 20 }, end: { month: 3, day: 30 } }, // 2025 01 20 – 2025 03 30
+                { name: "lp 4", start: { month: 3, day: 31 }, end: { month: 6, day: 8 } },  // 2025 03 31 – 2025 06 08
+                { name: "SOMMAR", start: { month: 6, day: 9 }, end: { month: 8, day: 17 } }, // 2025 06 09 – 2025 08 17
+            ];
+
+            function isInPeriod(start, end) {
+                const startDate = new Date(today.getFullYear(), start.month - 1, start.day);
+                const endDate = new Date(today.getFullYear(), end.month - 1, end.day);
+
+                if (end.month < start.month) {
+                    return (today >= startDate || today <= endDate);
+                } else {
+                    return (today >= startDate && today <= endDate);
+                }
+            }
+
+            for (let period of periods) {
+                if (isInPeriod(period.start, period.end)) {
+                    return period.name;
+                }
+            }
+
+            return "Unknown";
+        }
+
+        document.getElementById("period").textContent = getPeriod();
+    </script>
+</body>
+</html>

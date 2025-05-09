@@ -51,44 +51,52 @@
     </div>
 
     <script>
-        function getPeriod() {
-            const today = new Date();
-            const month = today.getMonth() + 1;
-            const day = today.getDate();
-            const year = today.getFullYear();
+    function getCountdownText(targetDate) {
+        const now = new Date();
+        const diffMs = targetDate - now;
+        const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+        return `${diffDays} dagar kvar`;
+    }
 
-            const periods = [
-                { title: "LP 1", subtitle: "HT " +  year, start: { month: 9, day: 2 }, end: { month: 11, day: 3 } },
-                { title: "LP 2", subtitle: "HT " +  year, start: { month: 11, day: 4 }, end: { month: 1, day: 19 } },
-                { title: "LP 3", subtitle: "VT " +  year, start: { month: 1, day: 20 }, end: { month: 3, day: 30 } },
-                { title: "LP 4", subtitle: "VT " +  year, start: { month: 3, day: 31 }, end: { month: 6, day: 8 } },
-                { title: "SOMMAR", subtitle: "", start: { month: 6, day: 9 }, end: { month: 8, day: 17 } },
-            ];
+    function getPeriod() {
+        const today = new Date();
+        const year = today.getFullYear();
 
-            function isInPeriod(start, end) {
-                const startDate = new Date(today.getFullYear(), start.month - 1, start.day);
-                const endDate = new Date(today.getFullYear(), end.month - 1, end.day);
+        const periods = [
+            { title: "LP 1", subtitle: "HT " +  year, start: { month: 9, day: 2 }, end: { month: 11, day: 3 } },
+            { title: "LP 2", subtitle: "HT " +  year, start: { month: 11, day: 4 }, end: { month: 1, day: 19 } },
+            { title: "LP 3", subtitle: "VT " +  year, start: { month: 1, day: 20 }, end: { month: 3, day: 30 } },
+            { title: "LP 4", subtitle: "VT " +  year, start: { month: 3, day: 31 }, end: { month: 6, day: 8 } },
+            { title: "SOMMAR!", subtitle: "", start: { month: 6, day: 9 }, end: { month: 8, day: 17 } }
+        ];
 
-                if (end.month < start.month) {
-                    return (today >= startDate || today <= endDate);
-                } else {
-                    return (today >= startDate && today <= endDate);
-                }
-            }
+        function isInPeriod(start, end) {
+            const startDate = new Date(today.getFullYear(), start.month - 1, start.day);
+            let endYear = today.getFullYear();
+            if (end.month < start.month) endYear += 1; // handle year rollover
+            const endDate = new Date(endYear, end.month - 1, end.day);
 
-            for (let period of periods) {
-                if (isInPeriod(period.start, period.end)) {
-                    return period;
-                }
-            }
-
-            return { title: "Unknown", subtitle: "" };
+            return today >= startDate && today <= endDate;
         }
 
-        const period = getPeriod();
-        document.getElementById("period-title").textContent = period.title;
-        document.getElementById("period-subtitle").textContent = period.subtitle;
-    </script>
+        for (let period of periods) {
+            if (isInPeriod(period.start, period.end)) {
+                // Check if it's summer and inject countdown
+                if (period.title.includes("SOMMAR")) {
+                    period.subtitle = getCountdownText(new Date(year, 8, 1)); // Sept 1
+                }
+                return period;
+            }
+        }
+
+        return { title: "Unknown", subtitle: "" };
+    }
+
+    const period = getPeriod();
+    document.getElementById("period-title").textContent = period.title;
+    document.getElementById("period-subtitle").textContent = period.subtitle;
+</script>
+
     <!-- Abduvohid Ilhomov, Github: AIlhomov -->
 </body>
 </html>

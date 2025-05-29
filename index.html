@@ -63,12 +63,13 @@
         const year = today.getFullYear();
 
         const periods = [
-            { title: "LP 1", subtitle: "HT " +  year, start: { month: 9, day: 2 }, end: { month: 11, day: 3 } },
-            { title: "LP 2", subtitle: "HT " +  year, start: { month: 11, day: 4 }, end: { month: 1, day: 19 } },
-            { title: "LP 3", subtitle: "VT " +  year, start: { month: 1, day: 20 }, end: { month: 3, day: 30 } },
-            { title: "LP 4", subtitle: "VT " +  year, start: { month: 3, day: 31 }, end: { month: 6, day: 8 } },
-            { title: "SOMMAR!", subtitle: "", start: { month: 6, day: 9 }, end: { month: 8, day: 17 } }
-        ];
+            { title: "LP 1", subtitle: "HT " + year, start: { month: 9, day: 2 }, end: { month: 11, day: 3 } },
+            { title: "LP 2", subtitle: "HT " + year, start: { month: 11, day: 4 }, end: { month: 1, day: 19 } },
+            { title: "LP 3", subtitle: "VT " + year, start: { month: 1, day: 20 }, end: { month: 3, day: 30 } },
+            { title: "LP 4", subtitle: "VT " + year, start: { month: 3, day: 31 }, end: { month: 5, day: 21 } },
+            { title: "SOMMAR!", subtitle: "", start: { month: 5, day: 22 }, end: { month: 9, day: 1 } } 
+        ];// Summer starts May 22 ENDS 1 SEPTEMBER BECAUSE COURSES START THEN (in Aalto atleast :)
+
 
         function isInPeriod(start, end) {
             const startDate = new Date(today.getFullYear(), start.month - 1, start.day);
